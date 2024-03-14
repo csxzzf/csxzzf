@@ -1,0 +1,29 @@
+import requests
+from bs4 import BeautifulSoup
+def getHTMLText(url,headers):
+    try:
+        r = requests.get(url, headers=headers, timeout=20)
+        r.raise_for_status()
+        # r.raise_for_status()是Python 中requests库中用来检查请求是否成功的方法。如果请求返回状态码不是2xx，
+        # 就会抛出HTTPError 异常。如果请求成功，则不会有任何反应。
+        r.encoding = r.apparent_encoding
+        return r.text
+    except:
+        return "网页获取失败！"
+
+def analyzingHTMLText(HTMLText):
+    soup = BeautifulSoup(HTMLText,"lxml")
+    temp = soup.find_all("span","short")
+    # print(temp)
+    for i in temp:
+        # print(i.text)
+        print(i.text.lstrip().rstrip())
+
+if __name__ == "__main__":
+    url = "https://book.douban.com/subject/1084336/comments/"
+    headers = {"User-Agent":"Mozilla/5.0 "
+                            "(Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"}
+    # 现在的豆瓣已有反爬虫机制，直接爬取会返回418代码。
+    # 目前只需要加入headers伪装成浏览器即可成功获取。
+    HTMLText = getHTMLText(url,headers)
+    analyzingHTMLText(HTMLText)
