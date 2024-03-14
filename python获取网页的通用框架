@@ -1,0 +1,16 @@
+# 以下是获取网页的通用框架
+import requests
+def getHTMLText(url):
+    try:
+        r = requests.get(url, timeout=20)
+        r.raise_for_status()
+        # r.raise_for_status()是Python 中requests库中用来检查请求是否成功的方法。如果请求返回状态码不是2xx，
+        # 就会抛出HTTPError 异常。如果请求成功，则不会有任何反应。
+        r.encoding = r.apparent_encoding
+        return r.text
+    except:
+        return "网页获取失败！"
+
+if __name__ == "__main__":
+    url = "https://book.douban.com/subject/1084336/comments/"
+    print(getHTMLText(url))
