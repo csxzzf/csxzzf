@@ -1,0 +1,33 @@
+导入请求
+从 bs4 导入 BeautifulSoup
+def getHTMLText(url,标题):
+    尝试：
+        r = requests.get(url, 标头=标头, 超时=20)
+        # print(r.status_code)
+        r.raise_for_status()
+        r.encoding = r.apparent_encoding
+        返回 r.text
+    另外：
+        打印（r.status_code）
+        return "网页读取失败！"
+
+def bsHTMLText(文本):
+    汤= BeautifulSoup（文本，“lxml”）
+    title = soup.find_all("ol","list-paddingleft-1")
+    temp = soup.find_all(attrs={"class":"code-snippet__fix"})
+    数量 = 1
+    对于 zip(标题,temp) 中的 i, j:
+        打印（数字，结束=“。”）
+        打印（i.文本）
+        j_temp = j.find_all(attrs={"class":"code-snippet_outer"}) #这里通过二次查找并循环打印，才实现了代码的一行打印。
+        对于j_temp中的n：
+            print(n.文本)
+        数字 += 1
+        # 打印(j.文本)
+
+如果 __name__ == "__main__":
+    url = "https://mp.weixin.qq.com/s/grs2EEwdpMBPEJboLLF0nw"
+    headers = {“接受”：“文本/ html，应用程序/ xhtml + xml，应用程序/ xml; q = 0.9，图像/ avif，图像/ webp，图像/ apng，* / *; q = 0.8，应用程序/签名交换;v=b3;q=0.7",
+               “升级不安全请求”：“1”，
+               "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, 如 Gecko) Chrome/114.0.5735.289 Safari/537.36"}
+    bsHTMLText ( getHTMLText(url, 标题))
